@@ -10,6 +10,7 @@ public class UnitAuthoring : MonoBehaviour
     public float            moveSpeed    = 1f;
     public float            acceleration = 1f;
     public float            angularSpeed = 1f;
+    public float            stopDistance = 1f;
 
     [Header("\n[ Unit Setting ]")]
     public CAMP_TYPE        campType;
@@ -30,6 +31,7 @@ public class UnitAuthoring : MonoBehaviour
                 moveSpeed       = authoring.moveSpeed,
                 acceleration    = authoring.acceleration,
                 angularSpeed    = authoring.angularSpeed,
+                stopDistance    = authoring.stopDistance,
             });
 
             Add_CampType(ref entity, authoring.campType);

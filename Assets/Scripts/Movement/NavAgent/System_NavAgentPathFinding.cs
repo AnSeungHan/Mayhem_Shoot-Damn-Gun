@@ -66,26 +66,25 @@ public partial struct System_NavAgentPathFinding : ISystem
             // Unity NavMesh를 사용하여 경로 계산 (managed 코드)
             var path = new UnityEngine.AI.NavMeshPath();
 
-            UnityEngine.AI.NavMeshTriangulation triangulation = UnityEngine.AI.NavMesh.CalculateTriangulation();
-            Debug.Log($"NavMesh vertices count: {triangulation.vertices.Length}");
+            /*UnityEngine.AI.NavMeshTriangulation triangulation = UnityEngine.AI.NavMesh.CalculateTriangulation();
+            Debug.Log($"NavMesh vertices count: {triangulation.vertices.Length}");*/
 
             /*UnityEngine.AI.NavMeshHit hit;
             if (UnityEngine.AI.NavMesh.SamplePosition(startPos, out hit, 5f, -1))
             {
-                Debug.Log("startPos");
+                startPos = hit.position;
             }
 
             if (UnityEngine.AI.NavMesh.SamplePosition(endPos, out hit, 5f, -1))
             {
-                Debug.Log("endPos");
+                endPos = hit.position;
             }*/
-
 
             if (UnityEngine.AI.NavMesh.CalculatePath
                 (
                     startPos, 
                     endPos, 
-                    agent.ValueRO.areaMask,
+                    -1,
                     path
                 ))
             {
@@ -111,10 +110,12 @@ public partial struct System_NavAgentPathFinding : ISystem
 
                     agent.ValueRW.pathBlob           = blobAsset;
                     agent.ValueRW.currentCornerIndex = 0;
-                    agent.ValueRW.isValid            = true;
+                    agent.ValueRW.isHasPath          = true;
                     agent.ValueRW.preTargetPosition  = endPos;
                 }
             }
+
+            agent.ValueRW.isNeedsNewPath = false;
         }
     }
 }

@@ -25,74 +25,47 @@ public partial struct Job_NavAgentMove : IJobEntity
     )
     {
         if (!agent.isHasPath ||
-            !agent.isValid ||
             !agent.pathBlob.IsCreated)
         {
             return;
         }
 
-        var currentPosition = transform.Position;
-
-        float separationRadius = 1.5f;  // 너무 가까운 유닛 밀어내는 거리
-        float3 separation = float3.zero;
-
-        for (int i = 0; i < AllTransforms.Length; i++)
-        {
-            var otherTransform = AllTransforms[i];
-            var otherPos = otherTransform.Position;
-
-
-            if (entityIndex == i)
-                continue;
-
-            // Y축 고정해서 2D 거리 계산
-            float3 pos2D    = new float3(otherPos.x, 0, otherPos.z);
-            float3 ownPos2D = new float3(currentPosition.x, 0, currentPosition.z);
-
-            float dist = math.distance(pos2D, ownPos2D);
-
-            // 분리력: 너무 가까우면 반대 방향으로 밀어냄
-            if (dist < separationRadius &&
-                dist > 0)
-            {
-                separation
-                    += (ownPos2D - pos2D)
-                    / (dist * dist);
-            }
-        }
-
-        float separationWeight = 1.5f;
-        float3 desiredDirection = separation * separationWeight;
-
-        // 목표 경로 방향 구하기
         ref var pathBlob = ref agent.pathBlob.Value;
-        var currentTarget = (agent.currentCornerIndex < pathBlob.Corners.Length)
-            ? (pathBlob.Corners[agent.currentCornerIndex])
-            : (float3.zero);
-
-        float3 targetDirection = math.normalize(currentTarget - currentPosition);
-
-        // 분리력 + 목표 방향 합성
-        float3 finalDirection = math.normalize(desiredDirection + targetDirection);
-
-        // Y축 고정
-        float3 moveDir = new float3(finalDirection.x, 0, finalDirection.z);
-
-        if (math.lengthsq(moveDir) < 1f)
+        if (agent.currentCornerIndex >= pathBlob.Corners.Length)
         {
+            agent.isReachedDestination = true;
+            agent.isHasPath            = false;
+            movement.curSpeed          = 0f;
+
             return;
         }
 
-        // 회전 처리
-        var targetRotation = quaternion.LookRotationSafe(moveDir, math.up());
-        transform.Rotation = math.slerp
-        (
-            transform.Rotation,
-            targetRotation,
-            movement.angularSpeed * DeltaTime
-        );
+        var currentTarget = pathBlob.Corners[agent.currentCornerIndex];
+        var currentPos = transform.Position;
+        var direction = currentTarget - currentPos;
+        var distance = math.length(direction);
 
-        // 이동 처리
+        // 현재 목표점에 도달했는지 확인
+        if (distance <= movement.stopDistance)
+        {
+            ++agent.currentCornerIndex;
+
+            if (agent.currentCornerIndex >= pathBlob.Corners.Length)
+            {
+                agent.isReachedDestination = true;
+                agent.isHasPath            = false;
+                movement.curSpeed          = 0f;
+
+                return;
+            }
+
+            return;
+        }
+
+        // 이동 방향 계산
+        direction = math.normalize(direction);
+
+        // 속도 계산 (가속도 적용)
         var targetSpeed = movement.moveSpeed;
         movement.curSpeed = math.lerp
         (
@@ -101,22 +74,26 @@ public partial struct Job_NavAgentMove : IJobEntity
             movement.acceleration * DeltaTime
         );
 
+        // 회전 계산
+        if (math.lengthsq(direction) > 0.001f)
+        {
+            var targetRotation = quaternion.LookRotationSafe(direction, math.up());
+            transform.Rotation = math.slerp
+            (
+                transform.Rotation,
+                targetRotation,
+                movement.acceleration * DeltaTime
+            );
+        }
+
+        // 이동 계산
         var moveDistance
-            = movement.curSpeed
+            = movement.moveSpeed
             * DeltaTime;
 
-        float3 moveDelta
-            = math.normalize(moveDir)
-            * math.min(moveDistance, math.distance(currentPosition, currentTarget));
-
-        if (HasNaN(moveDelta))
-            return;
-
-        float3 nextMove
-            = transform.Position
-            + moveDelta;
-
-        transform.Position = nextMove;
+        transform.Position
+            += direction
+            * math.min(moveDistance, distance);
     }
 
     public static bool HasNaN(float3 v)

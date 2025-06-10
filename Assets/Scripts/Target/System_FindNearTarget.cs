@@ -20,7 +20,7 @@ public partial struct System_FindNearTarget : ISystem
     {
         // 아군이 적군 찾기
         int numTargets = SystemAPI.QueryBuilder()
-            .WithAll<EnumyData>()
+            .WithAll<AllianceData>()
             .Build()
             .CalculateEntityCount();
 
@@ -31,14 +31,14 @@ public partial struct System_FindNearTarget : ISystem
         foreach (var 
             (
                 transform,
-                enumy,
+                alliance,
 
                 entity
             ) 
             in SystemAPI.Query
             <
                 RefRW<LocalTransform>,
-                RefRO<EnumyData>
+                RefRO<AllianceData>
             >()
             .WithEntityAccess())
         {
@@ -48,7 +48,7 @@ public partial struct System_FindNearTarget : ISystem
             ++idx;
         }
 
-        var job_alliance = new Job_FindNearTarget_Alliance
+        var job_alliance = new Job_FindNearTarget_Enumy
         {
             TargetTransform = TargetTransform,
             TargetEntity    = TargetEntity

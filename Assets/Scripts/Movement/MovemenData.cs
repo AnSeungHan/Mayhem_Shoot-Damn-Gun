@@ -7,9 +7,9 @@ public struct MovementData
     public float        moveSpeed;
     public float        acceleration;
     public float        angularSpeed;
+    public float        stopDistance;
 
     public float        curSpeed;
-    public float        stopDistance;
 }
 
 
@@ -30,7 +30,6 @@ public struct NavAgentData : IComponentData
     public bool         isHasPath;
     public bool         isPathCalculated;
     public bool         isNeedsNewPath;
-    public bool         isValid;
 
     public BlobAssetReference<NavMeshPathBlob> pathBlob;
     public int          currentWaypoint;
