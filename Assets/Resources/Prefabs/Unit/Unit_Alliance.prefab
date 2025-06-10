@@ -123,5 +123,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 0.1
   campType: 0
-  movementMode: 1
+  movementMode: 2
   clusterMode: 0

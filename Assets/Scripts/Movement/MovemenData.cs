@@ -5,10 +5,10 @@ public struct MovementData
     : IComponentData
 {
     public float        moveSpeed;
-    public float        curSpeed;
     public float        acceleration;
     public float        angularSpeed;
 
+    public float        curSpeed;
     public float        stopDistance;
 }
 

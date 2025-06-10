@@ -7,7 +7,9 @@ using Unity.Mathematics;
 using static ConfigAuthoring;
 
 [BurstCompile]
-[UpdateAfter(typeof(System_FindNearTarget))]
+[UpdateInGroup(typeof(SimulationSystemGroup))]
+[UpdateBefore(typeof(TransformSystemGroup))]
+[UpdateAfter(typeof(System_NavAgentPathFinding))]
 public partial struct System_NavAgentMove : ISystem
 {
     private EntityQuery _pathfindingQuery;
@@ -21,6 +23,20 @@ public partial struct System_NavAgentMove : ISystem
 
     public void OnUpdate(ref SystemState state)
     {
+        float DeltaTime = SystemAPI.Time.DeltaTime;
 
+        var query = SystemAPI.QueryBuilder()
+            .WithAll<LocalToWorld>()
+            .Build();
+
+        var allTransforms = query.ToComponentDataArray<LocalToWorld>(Allocator.TempJob);
+
+        var job = new Job_NavAgentMove
+        {
+            DeltaTime       = DeltaTime,
+            AllTransforms   = allTransforms
+        };
+
+        job.ScheduleParallel();
     }
 }

@@ -13,7 +13,7 @@ public partial struct System_FindNearTarget : ISystem
     public void OnCreate(ref SystemState state)
     {
         state.RequireForUpdate<Config_Info>();
-        state.RequireForUpdate<Config_Movement_Direction>();
+        state.RequireForUpdate<Config_FindTarget_LinearSearch>();
     }
 
     public void OnUpdate(ref SystemState state)

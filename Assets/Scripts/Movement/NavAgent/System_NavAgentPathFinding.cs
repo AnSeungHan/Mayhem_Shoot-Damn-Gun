@@ -1,3 +1,5 @@
+using UnityEngine;
+
 using Unity.Burst;
 using Unity.Entities;
 using Unity.Transforms;
@@ -44,6 +46,9 @@ public partial struct System_NavAgentPathFinding : ISystem
             >()
             .WithEntityAccess())
         {
+            if (Entity.Null == target.ValueRO.targetEntity)
+                continue;
+
             float3 startPos = transform.ValueRO.Position;
             float3 endPos   = target.ValueRO.targetTransform.Position;
             float3 prevPos  = agent.ValueRW.preTargetPosition;
@@ -60,6 +65,21 @@ public partial struct System_NavAgentPathFinding : ISystem
 
             // Unity NavMesh를 사용하여 경로 계산 (managed 코드)
             var path = new UnityEngine.AI.NavMeshPath();
+
+            UnityEngine.AI.NavMeshTriangulation triangulation = UnityEngine.AI.NavMesh.CalculateTriangulation();
+            Debug.Log($"NavMesh vertices count: {triangulation.vertices.Length}");
+
+            /*UnityEngine.AI.NavMeshHit hit;
+            if (UnityEngine.AI.NavMesh.SamplePosition(startPos, out hit, 5f, -1))
+            {
+                Debug.Log("startPos");
+            }
+
+            if (UnityEngine.AI.NavMesh.SamplePosition(endPos, out hit, 5f, -1))
+            {
+                Debug.Log("endPos");
+            }*/
+
 
             if (UnityEngine.AI.NavMesh.CalculatePath
                 (

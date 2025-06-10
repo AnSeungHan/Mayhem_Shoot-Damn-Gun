@@ -7,7 +7,9 @@ using static ConfigAuthoring;
 public class UnitAuthoring : MonoBehaviour
 {
     [Header("\n[ Info ]")]
-    public float            moveSpeed;
+    public float            moveSpeed    = 1f;
+    public float            acceleration = 1f;
+    public float            angularSpeed = 1f;
 
     [Header("\n[ Unit Setting ]")]
     public CAMP_TYPE        campType;
@@ -25,7 +27,9 @@ public class UnitAuthoring : MonoBehaviour
             AddComponent(entity, new TargetData());
             AddComponent(entity, new MovementData
             {
-                moveSpeed = authoring.moveSpeed
+                moveSpeed       = authoring.moveSpeed,
+                acceleration    = authoring.acceleration,
+                angularSpeed    = authoring.angularSpeed,
             });
 
             Add_CampType(ref entity, authoring.campType);
@@ -55,6 +59,7 @@ public class UnitAuthoring : MonoBehaviour
                     break;
 
                 case MOVEMENT_MODE.NAV_AGENT:
+                    AddComponent(entity, new NavAgentData());
                     break;
             }
         }
