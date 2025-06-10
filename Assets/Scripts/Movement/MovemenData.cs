@@ -32,10 +32,11 @@ public struct NavAgentData : IComponentData
     public bool         isNeedsNewPath;
     public bool         isValid;
 
-    public BlobAssetReference<NavMeshPathBlob> PathBlob;
+    public BlobAssetReference<NavMeshPathBlob> pathBlob;
     public int          currentWaypoint;
+    public int          areaMask;
     public int          currentCornerIndex;
-    public float3       prePosition;
+    public float3       preTargetPosition;
 }
 
 public struct WaypointBuffer : IBufferElementData

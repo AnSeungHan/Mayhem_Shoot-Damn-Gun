@@ -32,6 +32,7 @@ public partial struct System_FindNearTarget : ISystem
             (
                 transform,
                 enumy,
+
                 entity
             ) 
             in SystemAPI.Query
@@ -74,6 +75,7 @@ public partial struct System_FindNearTarget : ISystem
             (
                 transform,
                 enumy,
+
                 entity
             )
             in SystemAPI.Query

@@ -7,8 +7,7 @@ using Unity.Mathematics;
 using static ConfigAuthoring;
 
 [BurstCompile]
-[UpdateInGroup(typeof(SimulationSystemGroup))]
-[UpdateBefore(typeof(TransformSystemGroup))]
+[UpdateAfter(typeof(System_FindNearTarget))]
 public partial struct System_NavAgentPathFinding : ISystem
 {
     private EntityQuery _pathfindingQuery;
@@ -23,8 +22,79 @@ public partial struct System_NavAgentPathFinding : ISystem
             .WithAll<NavAgentData, TargetData, LocalTransform>()
             .Build();
     }
+
     public void OnUpdate(ref SystemState state)
     {
-        
+        // Unmanaged에서는 NavMesh API를 직접 사용할 수 없으므로 managed job 사용
+        var ecb = new EntityCommandBuffer(Allocator.TempJob);
+
+        foreach (var 
+            (
+                agent,
+                target,
+                transform,
+
+                entity
+            )
+            in SystemAPI.Query
+            <
+                RefRW<NavAgentData>,
+                RefRO<TargetData>,
+                RefRO<LocalTransform>
+            >()
+            .WithEntityAccess())
+        {
+            float3 startPos = transform.ValueRO.Position;
+            float3 endPos   = target.ValueRO.targetTransform.Position;
+            float3 prevPos  = agent.ValueRW.preTargetPosition;
+
+            float3 targetPos_Cur = new float3(endPos.x , 0f, endPos.z);
+            float3 targetPos_Pos = new float3(prevPos.x, 0f, prevPos.z);
+            float dist = math.distance(targetPos_Cur, targetPos_Pos);
+
+            if (0.4f > dist &&
+               agent.ValueRO.isHasPath)
+            {
+                continue;
+            }
+
+            // Unity NavMesh를 사용하여 경로 계산 (managed 코드)
+            var path = new UnityEngine.AI.NavMeshPath();
+
+            if (UnityEngine.AI.NavMesh.CalculatePath
+                (
+                    startPos, 
+                    endPos, 
+                    agent.ValueRO.areaMask,
+                    path
+                ))
+            {
+                if (path.corners.Length > 0)
+                {
+                    // 이전 경로 데이터 해제
+                    if (agent.ValueRO.pathBlob.IsCreated)
+                    {
+                        agent.ValueRW.pathBlob.Dispose();
+                    }
+
+                    // 새로운 Blob Asset 생성
+                    using var builder = new BlobBuilder(Allocator.Temp);
+                    ref var pathBlob  = ref builder.ConstructRoot<NavMeshPathBlob>();
+                    var cornersArray  = builder.Allocate(ref pathBlob.Corners, path.corners.Length);
+
+                    for (int i = 0; i < path.corners.Length; i++)
+                    {
+                        cornersArray[i] = path.corners[i];
+                    }
+
+                    var blobAsset = builder.CreateBlobAssetReference<NavMeshPathBlob>(Allocator.Persistent);
+
+                    agent.ValueRW.pathBlob           = blobAsset;
+                    agent.ValueRW.currentCornerIndex = 0;
+                    agent.ValueRW.isValid            = true;
+                    agent.ValueRW.preTargetPosition  = endPos;
+                }
+            }
+        }
     }
 }

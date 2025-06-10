@@ -24,6 +24,6 @@ public partial struct Job_DirectionMovement : IJobEntity
             - transform.Position;
         float speed = moveData.moveSpeed;
 
-        transform.Position += direction * speed * deltaTime;
+        transform.Position += (direction * speed * deltaTime);
     }
 }
