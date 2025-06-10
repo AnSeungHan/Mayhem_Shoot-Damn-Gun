@@ -3,9 +3,9 @@ using Unity.Burst;
 using Unity.Transforms;
 using Unity.Mathematics;
 using Unity.Collections;
+using Unity.Jobs;
 
 using static ConfigAuthoring;
-using Unity.Jobs;
 
 [BurstCompile]
 public partial struct System_FindNearTarget : ISystem
@@ -18,88 +18,62 @@ public partial struct System_FindNearTarget : ISystem
 
     public void OnUpdate(ref SystemState state)
     {
-        // 아군이 적군 찾기
-        int numTargets = SystemAPI.QueryBuilder()
-            .WithAll<AllianceData>()
+        int numUnit= SystemAPI.QueryBuilder()
+            .WithAll<UnitData>()
             .Build()
             .CalculateEntityCount();
 
-        NativeArray<LocalTransform> TargetTransform = CollectionHelper.CreateNativeArray<LocalTransform>(numTargets, Allocator.TempJob);
-        NativeArray<Entity>         TargetEntity    = CollectionHelper.CreateNativeArray<Entity>(numTargets, Allocator.TempJob);
+        NativeArray<LocalTransform> TargetTransform
+            = CollectionHelper.CreateNativeArray<LocalTransform>(numUnit, Allocator.TempJob);
+        NativeArray<Entity> TargetEntity
+            = CollectionHelper.CreateNativeArray<Entity>(numUnit, Allocator.TempJob);
+        NativeArray<CAMP_TYPE> TargetCamp
+            = CollectionHelper.CreateNativeArray<CAMP_TYPE>(numUnit, Allocator.TempJob);
 
-        int idx = 0;
+        /*int idx = 0;
         foreach (var 
             (
                 transform,
-                alliance,
+                unit,
 
                 entity
             ) 
             in SystemAPI.Query
             <
                 RefRW<LocalTransform>,
-                RefRO<AllianceData>
+                RefRO<UnitData>
             >()
             .WithEntityAccess())
         {
             TargetTransform[idx] = transform.ValueRO;
-            TargetEntity[idx] = entity;
+            TargetEntity[idx]    = entity;
+            TargetCamp[idx]      = unit.ValueRO.campType;
 
             ++idx;
-        }
+        }*/
 
-        var job_alliance = new Job_FindNearTarget_Enumy
+        var job_collect = new Job_UnitCollect
         {
             TargetTransform = TargetTransform,
-            TargetEntity    = TargetEntity
+            TargetEntity    = TargetEntity,
+            TargetCamp      = TargetCamp,
         };
 
-        JobHandle jobHandle = job_alliance.ScheduleParallel(state.Dependency);
+        var handle_collect = job_collect.ScheduleParallel(state.Dependency);
 
-        TargetTransform.Dispose(jobHandle);
-        TargetEntity.Dispose(jobHandle);
-
-        state.Dependency = jobHandle;
-
-        // 적군이 아군 찾기
-        /*numTargets = SystemAPI.QueryBuilder()
-            .WithAll<AllianceData>()
-            .Build()
-            .CalculateEntityCount();
-
-        TargetTransform = CollectionHelper.CreateNativeArray<LocalTransform>(numTargets, Allocator.TempJob);
-        TargetEntity    = CollectionHelper.CreateNativeArray<Entity>(numTargets, Allocator.TempJob);
-
-        idx = 0;
-        foreach (var
-            (
-                transform,
-                enumy,
-
-                entity
-            )
-            in SystemAPI.Query
-            <
-                RefRO<LocalTransform>,
-                RefRO<AllianceData>
-            >()
-            .WithEntityAccess())
-        {
-            TargetTransform[idx] = transform.ValueRO;
-            TargetEntity[idx] = entity;
-
-            ++idx;
-        }
-
-        var job_enumy = new Job_FindNearTarget_Enumy
+        var job_find = new Job_FindNearTarget
         {
             TargetTransform = TargetTransform,
-            TargetEntity    = TargetEntity
+            TargetEntity    = TargetEntity,
+            TargetCamp      = TargetCamp,
         };
 
-        var handle_enumy = job_enumy.ScheduleParallel(state.Dependency);
+        var handle_find = job_find.ScheduleParallel(handle_collect);
+        //var handle_find = job_find.ScheduleParallel(state.Dependency);
+        state.Dependency = handle_find;
 
-        TargetTransform.Dispose(handle_enumy);
-        TargetEntity.Dispose(handle_enumy);*/
+        TargetTransform.Dispose(handle_find);
+        TargetEntity.Dispose(handle_find);
+        TargetCamp.Dispose(handle_find);
     }
 }

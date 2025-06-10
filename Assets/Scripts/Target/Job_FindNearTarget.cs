@@ -4,15 +4,25 @@ using Unity.Transforms;
 using Unity.Collections;
 using Unity.Mathematics;
 
-public partial struct Job_FindNearTarget_Alliance : IJobEntity
+public partial struct Job_FindNearTarget : IJobEntity
 {
     [ReadOnly]
     public NativeArray<LocalTransform> TargetTransform;
     [ReadOnly]
     public NativeArray<Entity> TargetEntity;
+    [ReadOnly]
+    public NativeArray<CAMP_TYPE> TargetCamp;
 
     [BurstCompile]
-    public void Execute(in AllianceData alliance, in LocalTransform transform, ref TargetData target)
+    public void Execute
+    (
+        [EntityIndexInQuery]
+        int                     entityIndex,
+
+        in  UnitData            unit, 
+        in  LocalTransform      transform, 
+        ref TargetData          target
+    )
     {
         float minDistSq = float.MaxValue;
         Entity closestEntity = Entity.Null;
@@ -22,6 +32,12 @@ public partial struct Job_FindNearTarget_Alliance : IJobEntity
 
         for (int i = 0; i < TargetTransform.Length; ++i) 
         {
+            if (entityIndex == i)
+                continue;
+
+            if (unit.campType == TargetCamp[i])
+                continue;
+
             float3 targetPos = TargetTransform[i].Position;
 
             float dist = math.distance(myPos, targetPos);
@@ -42,40 +58,25 @@ public partial struct Job_FindNearTarget_Alliance : IJobEntity
     }
 }
 
-public partial struct Job_FindNearTarget_Enumy : IJobEntity
+public partial struct Job_UnitCollect : IJobEntity
 {
-    [ReadOnly]
-    public NativeArray<LocalTransform> TargetTransform;
-    [ReadOnly]
-    public NativeArray<Entity> TargetEntity;
+    public NativeArray<LocalTransform>  TargetTransform;
+    public NativeArray<Entity>          TargetEntity;
+    public NativeArray<CAMP_TYPE>       TargetCamp;
 
     [BurstCompile]
-    public void Execute(in EnumyData alliance, in LocalTransform transform, ref TargetData target)
+    public void Execute
+    (
+        [EntityIndexInQuery]
+        int                     entityIndex,
+
+        in  Entity              entity,
+        in  UnitData            unit,
+        in  LocalTransform      transform
+    )
     {
-        float minDistSq = float.MaxValue;
-        Entity closestEntity = Entity.Null;
-        LocalTransform closestTransform = default;
-
-        float3 myPos = transform.Position;
-
-        for (int i = 0; i < TargetTransform.Length; ++i)
-        {
-            float3 targetPos = TargetTransform[i].Position;
-
-            float dist = math.distance(myPos, targetPos);
-            if (dist < minDistSq)
-            {
-                minDistSq = dist;
-
-                closestEntity = TargetEntity[i];
-                closestTransform = TargetTransform[i];
-            }
-        }
-
-        if (closestEntity != Entity.Null)
-        {
-            target.targetEntity = closestEntity;
-            target.targetTransform = closestTransform;
-        }
+        TargetTransform[entityIndex] = transform;
+        TargetEntity[entityIndex]    = entity;
+        TargetCamp[entityIndex]      = unit.campType;
     }
 }

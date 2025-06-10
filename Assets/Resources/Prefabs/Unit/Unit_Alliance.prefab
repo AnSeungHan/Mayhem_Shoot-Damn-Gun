@@ -126,5 +126,5 @@ MonoBehaviour:
   angularSpeed: 1
   stopDistance: 1
   campType: 0
-  movementMode: 2
+  movementMode: 0
   clusterMode: 0

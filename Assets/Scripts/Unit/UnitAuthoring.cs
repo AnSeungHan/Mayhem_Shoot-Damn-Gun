@@ -24,7 +24,10 @@ public class UnitAuthoring : MonoBehaviour
         {
             Entity entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
 
-            AddComponent(entity, new UnitData());
+            AddComponent(entity, new UnitData
+            {
+                campType        = authoring.campType
+            });
             AddComponent(entity, new TargetData());
             AddComponent(entity, new MovementData
             {
@@ -34,22 +37,7 @@ public class UnitAuthoring : MonoBehaviour
                 stopDistance    = authoring.stopDistance,
             });
 
-            Add_CampType(ref entity, authoring.campType);
             Add_MovementMode(ref entity, authoring.movementMode);
-        }
-
-        private void Add_CampType(ref Entity entity, CAMP_TYPE mode)
-        {
-            switch (mode)
-            {
-                case CAMP_TYPE.ALLIANCE:
-                    AddComponent(entity, new AllianceData());
-                    break;
-
-                case CAMP_TYPE.ENUMY:
-                    AddComponent(entity, new EnumyData());
-                    break;
-            }
         }
 
         private void Add_MovementMode(ref Entity entity, MOVEMENT_MODE mode)
@@ -67,11 +55,5 @@ public class UnitAuthoring : MonoBehaviour
         }
     }
 
-    [System.Serializable]
-    public enum CAMP_TYPE
-    {
-        ALLIANCE,
-        ENUMY
-    }
 }
 

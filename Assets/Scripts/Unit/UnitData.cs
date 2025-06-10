@@ -1,13 +1,14 @@
 using Unity.Entities;
 
+[System.Serializable]
+public enum CAMP_TYPE
+{
+    ALLIANCE,
+    ENUMY
+}
+
 public struct UnitData
     : IComponentData
-{ }
-
-public struct AllianceData
-    : IComponentData
-{ }
-
-public struct EnumyData
-    : IComponentData
-{ }
+{
+    public CAMP_TYPE    campType;
+}
