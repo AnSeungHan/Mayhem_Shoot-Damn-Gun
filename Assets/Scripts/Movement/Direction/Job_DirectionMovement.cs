@@ -16,6 +16,9 @@ public partial struct Job_DirectionMovement : IJobEntity
         ref LocalTransform          transform
     )
     {
+        if (Entity.Null == target.targetEntity)
+            return;
+
         float3 direction
             = target.targetTransform.Position
             - transform.Position;

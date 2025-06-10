@@ -9,7 +9,8 @@ public class SpawnerAuthoring : MonoBehaviour
 
     [Header("\n[ Setting ]")]
     public int          numCreate;
-    public Vector2      bounds;
+    public Vector2      boundsBegin;
+    public Vector2      boundsEnd;
 
     class Baker : Baker<SpawnerAuthoring>
     {
@@ -21,7 +22,8 @@ public class SpawnerAuthoring : MonoBehaviour
             {
                 createPrefab    = GetEntity(authoring.createPrefab, TransformUsageFlags.Dynamic),
                 numCreate       = authoring.numCreate,
-                bounds          = authoring.bounds,
+                boundsBegin     = authoring.boundsBegin,
+                boundsEnd       = authoring.boundsEnd,
             });
         }
     }

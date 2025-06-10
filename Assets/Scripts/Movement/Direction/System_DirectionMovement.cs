@@ -6,6 +6,7 @@ using Unity.Mathematics;
 using static ConfigAuthoring;
 
 [BurstCompile]
+[UpdateAfter(typeof(System_FindNearTarget))]
 public partial struct System_DirectionMovement : ISystem
 {
     [BurstCompile]

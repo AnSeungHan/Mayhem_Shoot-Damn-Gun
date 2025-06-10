@@ -34,11 +34,14 @@ public partial struct System_Spawner : ISystem
             { 
                 var newEntity = state.EntityManager.Instantiate(spawner.ValueRO.createPrefab);
 
+                float2 begin = spawner.ValueRO.boundsBegin;
+                float2 end   = spawner.ValueRO.boundsEnd;
+
                 float3 pos = new float3
                 (
-                    UnityEngine.Random.Range(0f, spawner.ValueRO.bounds.x),
+                    UnityEngine.Random.Range(begin.x, end.x),
                     0f,
-                    UnityEngine.Random.Range(0f, spawner.ValueRO.bounds.y)
+                    UnityEngine.Random.Range(begin.y, end.y)
                 );
 
                 state.EntityManager.SetComponentData(newEntity, new LocalTransform 

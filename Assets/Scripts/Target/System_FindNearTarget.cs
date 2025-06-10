@@ -5,6 +5,7 @@ using Unity.Mathematics;
 using Unity.Collections;
 
 using static ConfigAuthoring;
+using Unity.Jobs;
 
 [BurstCompile]
 public partial struct System_FindNearTarget : ISystem
@@ -35,7 +36,7 @@ public partial struct System_FindNearTarget : ISystem
             ) 
             in SystemAPI.Query
             <
-                RefRO<LocalTransform>,
+                RefRW<LocalTransform>,
                 RefRO<EnumyData>
             >()
             .WithEntityAccess())
@@ -52,13 +53,15 @@ public partial struct System_FindNearTarget : ISystem
             TargetEntity    = TargetEntity
         };
 
-        job_alliance.ScheduleParallel();
+        JobHandle jobHandle = job_alliance.ScheduleParallel(state.Dependency);
 
-        TargetTransform.Dispose();
-        TargetEntity.Dispose();
+        TargetTransform.Dispose(jobHandle);
+        TargetEntity.Dispose(jobHandle);
+
+        state.Dependency = jobHandle;
 
         // 적군이 아군 찾기
-        numTargets = SystemAPI.QueryBuilder()
+        /*numTargets = SystemAPI.QueryBuilder()
             .WithAll<AllianceData>()
             .Build()
             .CalculateEntityCount();
@@ -92,9 +95,9 @@ public partial struct System_FindNearTarget : ISystem
             TargetEntity    = TargetEntity
         };
 
-        job_enumy.ScheduleParallel();
+        var handle_enumy = job_enumy.ScheduleParallel(state.Dependency);
 
-        TargetTransform.Dispose();
-        TargetEntity.Dispose();
+        TargetTransform.Dispose(handle_enumy);
+        TargetEntity.Dispose(handle_enumy);*/
     }
 }
