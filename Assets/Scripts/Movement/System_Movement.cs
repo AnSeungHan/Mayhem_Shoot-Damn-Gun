@@ -7,6 +7,7 @@ using static ConfigAuthoring;
 
 [BurstCompile]
 [UpdateAfter(typeof(System_DirectionMovement))]
+[UpdateAfter(typeof(System_NavAgentMove))]
 public partial struct System_Movement : ISystem
 {
     [BurstCompile]
