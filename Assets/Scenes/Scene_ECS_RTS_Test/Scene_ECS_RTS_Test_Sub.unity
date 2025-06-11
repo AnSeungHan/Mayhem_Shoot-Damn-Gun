@@ -197,7 +197,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementMode: 2
-  clusterMode: 0
+  clusterMode: 1
   findTargetMode: 1
 --- !u!1 &667502064
 GameObject:

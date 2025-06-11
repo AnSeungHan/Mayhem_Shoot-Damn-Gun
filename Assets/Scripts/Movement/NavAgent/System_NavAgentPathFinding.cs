@@ -58,7 +58,7 @@ public partial struct System_NavAgentPathFinding : ISystem
             float dist = math.distance(targetPos_Cur, targetPos_Pos);
 
             if (0.4f > dist &&
-               agent.ValueRO.isHasPath)
+               agent.ValueRO.hasPath)
             {
                 continue;
             }
@@ -110,7 +110,7 @@ public partial struct System_NavAgentPathFinding : ISystem
 
                     agent.ValueRW.pathBlob           = blobAsset;
                     agent.ValueRW.currentCornerIndex = 0;
-                    agent.ValueRW.isHasPath          = true;
+                    agent.ValueRW.hasPath          = true;
                     agent.ValueRW.preTargetPosition  = endPos;
                 }
             }

@@ -28,7 +28,7 @@ public struct NavAgentData : IComponentData
 {
     public bool         isReachedDestination;
     public bool         isMove;
-    public bool         isHasPath;
+    public bool         hasPath;
     public bool         isPathCalculated;
     public bool         isNeedsNewPath;
 

@@ -24,7 +24,7 @@ public partial struct Job_NavAgentMove : IJobEntity
         ref LocalTransform  transform
     )
     {
-        if (!agent.isHasPath ||
+        if (!agent.hasPath ||
             !agent.pathBlob.IsCreated)
         {
             return;
@@ -34,7 +34,7 @@ public partial struct Job_NavAgentMove : IJobEntity
         if (agent.currentCornerIndex >= pathBlob.Corners.Length)
         {
             agent.isReachedDestination = true;
-            agent.isHasPath            = false;
+            agent.hasPath            = false;
             movement.curSpeed          = 0f;
 
             return;
@@ -53,7 +53,7 @@ public partial struct Job_NavAgentMove : IJobEntity
             if (agent.currentCornerIndex >= pathBlob.Corners.Length)
             {
                 agent.isReachedDestination = true;
-                agent.isHasPath            = false;
+                agent.hasPath            = false;
                 movement.curSpeed          = 0f;
 
                 return;
@@ -91,8 +91,10 @@ public partial struct Job_NavAgentMove : IJobEntity
             = movement.moveSpeed
             * DeltaTime;
 
-        transform.Position
-            += direction
+        movement.hasNewPosition = true;
+        movement.moveNextPosition
+            = transform.Position
+            + direction
             * math.min(moveDistance, distance);
     }
 
