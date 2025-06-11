@@ -10,7 +10,7 @@ public struct MovementData
     public float        stopDistance;
 
     public float        curSpeed;
-    public bool         isMove;
+    public bool         hasNewPosition;
     public float3       moveNextPosition;
 }
 
