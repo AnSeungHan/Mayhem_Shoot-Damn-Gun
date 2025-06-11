@@ -10,9 +10,9 @@ public partial struct Job_DirectionMovement : IJobEntity
 
     public void Execute
     (
-        in  MovementData            moveData,
         in  MovementDirectionData   movement,
         in  TargetData              target,
+        ref MovementData            moveData,
         ref LocalTransform          transform
     )
     {
@@ -24,13 +24,13 @@ public partial struct Job_DirectionMovement : IJobEntity
             - transform.Position;
         float speed = moveData.moveSpeed;
 
-        if (math.all(math.approx(transform.Position, nextPosition)))
+        if (math.distance(transform.Position, moveData.moveNextPosition) < 0.01f)
         {
             moveData.hasNewPosition = false;
-            
+
             return;
         }
-        
+
         moveData.hasNewPosition = true;
         moveData.moveNextPosition 
             = transform.Position 

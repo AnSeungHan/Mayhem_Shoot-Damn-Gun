@@ -20,10 +20,7 @@ public partial struct System_Movement : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        var job = new Job_Movement
-        {
-            deltaTime = SystemAPI.Time.DeltaTime
-        };
+        var job = new Job_Movement();
 
         job.ScheduleParallel();
     }

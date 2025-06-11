@@ -6,8 +6,6 @@ using Unity.Mathematics;
 [BurstCompile]
 public partial struct Job_Movement : IJobEntity
 {
-    public float deltaTime;
-
     public void Execute
     (
         in  MovementData            moveData,
@@ -17,6 +15,6 @@ public partial struct Job_Movement : IJobEntity
        if (!moveData.hasNewPosition)
             return;
 
-       transform.Position = moveNextPosition;
+       transform.Position = moveData.moveNextPosition;
     }
 }
