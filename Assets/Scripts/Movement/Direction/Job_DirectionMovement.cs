@@ -24,6 +24,16 @@ public partial struct Job_DirectionMovement : IJobEntity
             - transform.Position;
         float speed = moveData.moveSpeed;
 
-        transform.Position += (direction * speed * deltaTime);
+        if (math.all(math.approx(transform.Position, nextPosition)))
+        {
+            moveData.hasNewPosition = false;
+            
+            return;
+        }
+        
+        moveData.hasNewPosition = true;
+        moveData.moveNextPosition 
+            = transform.Position 
+            + (direction * speed * deltaTime);
     }
 }
