@@ -418,7 +418,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.16666667
+  m_VoxelSize: 0.6666667
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 222d956fad8f7b74f9d22551890a2540, type: 2}
   m_BuildHeightMesh: 0
@@ -452,7 +452,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   createPrefab: {fileID: 1320714072447345096, guid: 4c1bf2fa2e8d38a49a7b9350f31490cd, type: 3}
-  numCreate: 50
+  numCreate: 300
   boundsBegin: {x: 25, y: 25}
   boundsEnd: {x: 50, y: 50}
 --- !u!4 &807183926
