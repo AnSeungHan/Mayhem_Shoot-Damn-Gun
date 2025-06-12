@@ -21,7 +21,7 @@ public partial struct Job_BOIDS : IJobEntity
     public NativeArray<int> NavMeshIndices;
 
 
-    const float separationRadius = 1.5f;  // ³Ê¹« °¡±î¿î À¯´Ö ¹Ð¾î³»´Â °Å¸®
+    const float separationRadius = 1.5f;  // ë„ˆë¬´ ê°€ê¹Œìš´ ìœ ë‹› ë°€ì–´ë‚´ëŠ” ê±°ë¦¬
     const float separationWeight = 1.5f;
 
     public void Execute
@@ -48,13 +48,13 @@ public partial struct Job_BOIDS : IJobEntity
             if (entityIndex == i)
                 continue;
 
-            // YÃà °íÁ¤ÇØ¼­ 2D °Å¸® °è»ê
+            // Yì¶• ê³ ì •í•´ì„œ 2D ê±°ë¦¬ ê³„ì‚°
             float3 pos2D    = new float3(otherPos.x, 0, otherPos.z);
             float3 ownPos2D = new float3(curPos.x  , 0, curPos.z);
 
             float dist = math.distance(pos2D, ownPos2D);
 
-            // ºÐ¸®·Â: ³Ê¹« °¡±î¿ì¸é ¹Ý´ë ¹æÇâÀ¸·Î ¹Ð¾î³¿
+            // ë¶„ë¦¬ë ¥: ë„ˆë¬´ ê°€ê¹Œìš°ë©´ ë°˜ëŒ€ ë°©í–¥ìœ¼ë¡œ ë°€ì–´ëƒ„
             if (dist < separationRadius &&
                 dist > 0)
             {
@@ -64,10 +64,10 @@ public partial struct Job_BOIDS : IJobEntity
             }
         }
 
-        float3 desiredDirection = separation * separationWeight;                      // ºÐ¸®·Â
-        float3 targetDirection  = math.normalize(nxtPos - curPos);                    // ¸ñÇ¥ °æ·Î ¹æÇâ ±¸ÇÏ±â
-        float3 finalDirection  = math.normalize(desiredDirection + targetDirection);  // ºÐ¸®·Â + ¸ñÇ¥ ¹æÇâ ÇÕ¼º
-        float3 moveDir         = new float3(finalDirection.x, 0, finalDirection.z);   // YÃà °íÁ¤
+        float3 desiredDirection = separation * separationWeight;                      // ë¶„ë¦¬ë ¥
+        float3 targetDirection  = math.normalize(nxtPos - curPos);                    // ëª©í‘œ ê²½ë¡œ ë°©í–¥ êµ¬í•˜ê¸°
+        float3 finalDirection   = math.normalize(desiredDirection + targetDirection);  // ë¶„ë¦¬ë ¥ + ëª©í‘œ ë°©í–¥ í•©ì„±
+        float3 moveDir          = new float3(finalDirection.x, 0, finalDirection.z);   // Yì¶• ê³ ì •
 
         if (math.lengthsq(moveDir) < 1f)
         {
