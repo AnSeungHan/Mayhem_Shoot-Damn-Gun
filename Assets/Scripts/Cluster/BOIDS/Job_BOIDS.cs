@@ -7,19 +7,16 @@ using Unity.Transforms;
 using Unity.Mathematics;
 using Unity.Collections;
 
-
 public partial struct Job_BOIDS : IJobEntity
 {
     [ReadOnly]
     public float DeltaTime;
     [ReadOnly]
     public NativeArray<LocalToWorld> AllTransforms;
-
     [ReadOnly]
     public NativeArray<float3> NavMeshVertices;
     [ReadOnly] 
     public NativeArray<int> NavMeshIndices;
-
 
     const float separationRadius = 1.5f;  // 너무 가까운 유닛 밀어내는 거리
     const float separationWeight = 1.5f;
@@ -70,9 +67,7 @@ public partial struct Job_BOIDS : IJobEntity
         float3 moveDir          = new float3(finalDirection.x, 0, finalDirection.z);   // Y축 고정
 
         if (math.lengthsq(moveDir) < 1f)
-        {
             return;
-        }
 
         float3 moveDelta
             = math.normalize(moveDir)
