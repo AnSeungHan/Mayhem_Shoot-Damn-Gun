@@ -133,7 +133,8 @@ public partial struct Job_BOIDS : IJobEntity
         float dot12 = math.dot(v1, v2);
 
         float denom = dot00 * dot11 - dot01 * dot01;
-        if (denom == 0) return false;
+        if (denom == 0) 
+            return false;
 
         float u = (dot11 * dot02 - dot01 * dot12) / denom;
         float v = (dot00 * dot12 - dot01 * dot02) / denom;
