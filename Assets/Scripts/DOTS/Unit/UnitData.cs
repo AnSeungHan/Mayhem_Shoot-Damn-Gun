@@ -32,6 +32,8 @@ public struct UnitData
     public NativeArray<DamageValue> atk;     // 일반 데미지
 }
 
+//bool hasComponent = SystemAPI.EntityManager.HasComponent<YourComponent>(entity);
+
 public struct AllianceData
     : IComponentData
 { }
