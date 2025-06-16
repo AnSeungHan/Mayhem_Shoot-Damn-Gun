@@ -30,28 +30,6 @@ public partial struct System_FindNearTarget : ISystem
         NativeArray<CAMP_TYPE> TargetCamp
             = CollectionHelper.CreateNativeArray<CAMP_TYPE>(numUnit, Allocator.TempJob);
 
-        /*int idx = 0;
-        foreach (var 
-            (
-                transform,
-                unit,
-
-                entity
-            ) 
-            in SystemAPI.Query
-            <
-                RefRW<LocalTransform>,
-                RefRO<UnitData>
-            >()
-            .WithEntityAccess())
-        {
-            TargetTransform[idx] = transform.ValueRO;
-            TargetEntity[idx]    = entity;
-            TargetCamp[idx]      = unit.ValueRO.campType;
-
-            ++idx;
-        }*/
-
         var job_collect = new Job_UnitCollect
         {
             TargetTransform = TargetTransform,

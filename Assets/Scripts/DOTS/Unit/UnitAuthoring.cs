@@ -38,6 +38,7 @@ public class UnitAuthoring : MonoBehaviour
             });
 
             Add_MovementMode(ref entity, authoring.movementMode);
+            Add_CampeType(ref entity, authoring.campType);
         }
 
         private void Add_MovementMode(ref Entity entity, MOVEMENT_MODE mode)
@@ -53,7 +54,20 @@ public class UnitAuthoring : MonoBehaviour
                     break;
             }
         }
-    }
 
+        private void Add_CampeType(ref Entity entity, CAMP_TYPE type)
+        {
+            switch (type)
+            {
+                case CAMP_TYPE.ALLIANCE:
+                    AddComponent(entity, new AllianceData());
+                    break;
+
+                case CAMP_TYPE.ENUMY:
+                    AddComponent(entity, new EnumyData());
+                    break;
+            }
+        }
+    }
 }
 

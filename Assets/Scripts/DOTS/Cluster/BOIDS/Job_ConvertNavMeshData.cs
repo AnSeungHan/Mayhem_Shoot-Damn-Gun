@@ -1,5 +1,10 @@
-[BurstCompile]
-private struct Job_ConvertNavMeshData : IJob
+using UnityEngine;
+using Unity.Entities;
+using Unity.Mathematics;
+using Unity.Jobs;
+using Unity.Collections;
+
+public partial struct Job_ConvertNavMeshData : IJob
 {
     [ReadOnly]
     public Vector3[] Vertices;

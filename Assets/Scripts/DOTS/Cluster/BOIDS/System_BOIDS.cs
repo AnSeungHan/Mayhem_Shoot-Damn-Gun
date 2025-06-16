@@ -9,19 +9,16 @@ using Unity.Collections;
 
 using static ConfigAuthoring;
 
-[BurstCompile]
 [UpdateAfter(typeof(System_DirectionMovement))]
 [UpdateAfter(typeof(System_NavAgentMove))]
 public partial struct System_BOIDS : ISystem
 {
-    [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
         state.RequireForUpdate<Config_Info>();
         state.RequireForUpdate<Config_Cluster_BOIDS>();
     }
 
-    [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
         var query = SystemAPI.QueryBuilder()
@@ -30,20 +27,17 @@ public partial struct System_BOIDS : ISystem
 
         // 네비 메쉬 정점 정보
         NavMeshTriangulation triangulation = NavMesh.CalculateTriangulation();
-        NativeArray<float3> navMeshVerts = new NativeArray<float3>(vertices.Length, Allocator.TempJob);
-        NativeArray<int>    navMeshTris  = new NativeArray<int>(indices.Length, Allocator.TempJob);
-        
-        var convertJob = new Job_ConvertNavMeshData
-        {
-            Vertices     = triangulation.vertices,
-            Indices      = triangulation.indices,
-            
-            NavMeshVerts = navMeshVerts,
-            NavMeshTris  = navMeshTris
-        };
-        
-        JobHandle convertHandle = convertJob.Schedule();
-        
+        int vertexCount = triangulation.vertices.Length;
+        int indexCount = triangulation.indices.Length;
+        NativeArray<float3> navMeshVerts = new NativeArray<float3>(vertexCount, Allocator.TempJob);
+        NativeArray<int>    navMeshTris  = new NativeArray<int>(indexCount, Allocator.TempJob);
+
+        for (int i = 0; i < vertexCount; i++)
+            navMeshVerts[i] = triangulation.vertices[i];
+
+        for (int i = 0; i < indexCount; i++)
+            navMeshTris[i] = triangulation.indices[i];
+
         // BOIDS 알고리즘
         var allTransforms = query.ToComponentDataArray<LocalToWorld>(Allocator.TempJob);
         var job = new Job_BOIDS
@@ -54,10 +48,10 @@ public partial struct System_BOIDS : ISystem
             NavMeshIndices  = navMeshTris
         };
 
-        job.ScheduleParallel(convertJob);
+        job.ScheduleParallel();
 
-        navMeshVerts.Dispose();
+        /*navMeshVerts.Dispose();
         navMeshTris.Dispose();
-        allTransforms.Dispose();
+        allTransforms.Dispose();*/
     }
 }
