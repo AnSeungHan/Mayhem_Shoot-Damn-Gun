@@ -28,20 +28,23 @@ public partial struct System_BOIDS : ISystem
             .WithAll<LocalToWorld>()
             .Build();
 
+        // 네비 메쉬 정점 정보
         NavMeshTriangulation triangulation = NavMesh.CalculateTriangulation();
-
-        Vector3[] vertices = triangulation.vertices;
-        int[] indices = triangulation.indices;
-
         NativeArray<float3> navMeshVerts = new NativeArray<float3>(vertices.Length, Allocator.TempJob);
-        NativeArray<int> navMeshTris = new NativeArray<int>(indices.Length, Allocator.TempJob);
-
-        for (int i = 0; i < vertices.Length; i++)
-            navMeshVerts[i] = vertices[i];
-
-        for (int i = 0; i < indices.Length; i++)
-            navMeshTris[i] = indices[i];
-
+        NativeArray<int>    navMeshTris  = new NativeArray<int>(indices.Length, Allocator.TempJob);
+        
+        var convertJob = new Job_ConvertNavMeshData
+        {
+            Vertices     = triangulation.vertices,
+            Indices      = triangulation.indices,
+            
+            NavMeshVerts = navMeshVerts,
+            NavMeshTris  = navMeshTris
+        };
+        
+        JobHandle convertHandle = convertJob.Schedule();
+        
+        // BOIDS 알고리즘
         var allTransforms = query.ToComponentDataArray<LocalToWorld>(Allocator.TempJob);
         var job = new Job_BOIDS
         {
@@ -51,6 +54,10 @@ public partial struct System_BOIDS : ISystem
             NavMeshIndices  = navMeshTris
         };
 
-        job.ScheduleParallel();
+        job.ScheduleParallel(convertJob);
+
+        navMeshVerts.Dispose();
+        navMeshTris.Dispose();
+        allTransforms.Dispose();
     }
 }
