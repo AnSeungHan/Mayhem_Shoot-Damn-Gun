@@ -196,7 +196,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b3798721b72fc94899d9b90962d7506, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementMode: 2
+  movementMode: 3
   clusterMode: 1
   findTargetMode: 1
 --- !u!1 &667502064
@@ -433,7 +433,7 @@ GameObject:
   - component: {fileID: 807183926}
   - component: {fileID: 807183925}
   m_Layer: 0
-  m_Name: Spawn (Unit_Enumy)
+  m_Name: Spawn (Unit_Enumy) (0)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -452,7 +452,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   createPrefab: {fileID: 1320714072447345096, guid: 4c1bf2fa2e8d38a49a7b9350f31490cd, type: 3}
-  numCreate: 300
+  numCreate: 100
   boundsBegin: {x: 25, y: 25}
   boundsEnd: {x: 50, y: 50}
 --- !u!4 &807183926

@@ -81,7 +81,9 @@ public class ConfigAuthoring : MonoBehaviour
         NONE,
 
         DIRECTION,
-        NAV_AGENT
+        OWNER_ROTATION,
+        NAV_AGENT,
+        INPUT,
     }
 
     public struct Config_Movement_Direction

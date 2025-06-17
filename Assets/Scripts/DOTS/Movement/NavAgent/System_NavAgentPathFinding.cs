@@ -28,7 +28,7 @@ public partial struct System_NavAgentPathFinding : ISystem
     public void OnUpdate(ref SystemState state)
     {
         // Unmanaged에서는 NavMesh API를 직접 사용할 수 없으므로 managed job 사용
-        var ecb = new EntityCommandBuffer(Allocator.TempJob);
+        // var ecb = new EntityCommandBuffer(Allocator.TempJob);
 
         foreach (var 
             (
@@ -63,6 +63,11 @@ public partial struct System_NavAgentPathFinding : ISystem
                 continue;
             }
 
+            if (agent.ValueRO.pathBlob.IsCreated)
+            {
+                agent.ValueRW.pathBlob.Dispose();
+            }
+
             // Unity NavMesh를 사용하여 경로 계산 (managed 코드)
             var path = new UnityEngine.AI.NavMeshPath();
 
@@ -90,12 +95,6 @@ public partial struct System_NavAgentPathFinding : ISystem
             {
                 if (path.corners.Length > 0)
                 {
-                    // 이전 경로 데이터 해제
-                    if (agent.ValueRO.pathBlob.IsCreated)
-                    {
-                        agent.ValueRW.pathBlob.Dispose();
-                    }
-
                     // 새로운 Blob Asset 생성
                     using var builder = new BlobBuilder(Allocator.Temp);
                     ref var pathBlob  = ref builder.ConstructRoot<NavMeshPathBlob>();
@@ -110,12 +109,11 @@ public partial struct System_NavAgentPathFinding : ISystem
 
                     agent.ValueRW.pathBlob           = blobAsset;
                     agent.ValueRW.currentCornerIndex = 0;
-                    agent.ValueRW.hasPath          = true;
+                    agent.ValueRW.hasPath            = true;
                     agent.ValueRW.preTargetPosition  = endPos;
                 }
             }
-
-            agent.ValueRW.isNeedsNewPath = false;
         }
+        
     }
 }

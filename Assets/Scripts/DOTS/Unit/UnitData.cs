@@ -28,8 +28,6 @@ public struct UnitData
     public int          stat_health;    // 체력
     public int          stat_shield;    // 쉴드
     public int          stat_defensive; // 장갑
-
-    public NativeArray<DamageValue> atk;     // 일반 데미지
 }
 
 //bool hasComponent = SystemAPI.EntityManager.HasComponent<YourComponent>(entity);

@@ -47,15 +47,7 @@ public partial struct System_FindNearTarget : ISystem
         };
 
         var handle_find = job_find.ScheduleParallel(handle_collect);
-        //var handle_find = job_find.ScheduleParallel(state.Dependency);
         state.Dependency = handle_find;
-
-        /*
-        TargetTransform.Dispose(handle_find);
-        TargetEntity.Dispose(handle_find);
-        TargetCamp.Dispose(handle_find);
-        */
-        
         handle_find.Complete();
     
         TargetTransform.Dispose();

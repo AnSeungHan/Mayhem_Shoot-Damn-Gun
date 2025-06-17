@@ -48,10 +48,11 @@ public partial struct System_BOIDS : ISystem
             NavMeshIndices  = navMeshTris
         };
 
-        job.ScheduleParallel();
+        var handle = job.ScheduleParallel(state.Dependency);
+        handle.Complete();
 
-        /*navMeshVerts.Dispose();
+        navMeshVerts.Dispose();
         navMeshTris.Dispose();
-        allTransforms.Dispose();*/
+        allTransforms.Dispose();
     }
 }

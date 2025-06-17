@@ -24,12 +24,12 @@ public partial struct Job_DirectionMovement : IJobEntity
             - transform.Position;
         float speed = moveData.moveSpeed;
 
-        if (math.distance(transform.Position, moveData.moveNextPosition) < 0.01f)
+        /*if (math.distance(transform.Position, moveData.moveNextPosition) < 0.01f)
         {
             moveData.hasNewPosition = false;
 
             return;
-        }
+        }*/
 
         moveData.hasNewPosition = true;
         moveData.moveNextPosition 

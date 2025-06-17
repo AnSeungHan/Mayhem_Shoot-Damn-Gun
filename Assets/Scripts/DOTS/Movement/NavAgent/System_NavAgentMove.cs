@@ -37,6 +37,10 @@ public partial struct System_NavAgentMove : ISystem
             AllTransforms   = allTransforms
         };
 
-        job.ScheduleParallel();
+        var handle = job.ScheduleParallel(state.Dependency);
+        state.Dependency = handle;
+        handle.Complete();
+
+        allTransforms.Dispose();
     }
 }

@@ -24,10 +24,11 @@ public partial struct Job_BOIDS : IJobEntity
     public void Execute
     (
         [EntityIndexInQuery]
-        int                 entityIndex,
+        int                     entityIndex,
 
-        in  LocalTransform  transform,
-        ref MovementData    movement
+        in  Cluster_BOIDSData   cluster,
+        in  LocalTransform      transform,
+        ref MovementData        movement
     )
     {
         if (!movement.hasNewPosition)
@@ -39,11 +40,11 @@ public partial struct Job_BOIDS : IJobEntity
 
         for (int i = 0; i < AllTransforms.Length; i++)
         {
-            var otherTransform = AllTransforms[i];
-            var otherPos = otherTransform.Position;
-
             if (entityIndex == i)
                 continue;
+            
+            var otherTransform = AllTransforms[i];
+            var otherPos = otherTransform.Position;
 
             // Y축 고정해서 2D 거리 계산
             float3 pos2D    = new float3(otherPos.x, 0, otherPos.z);

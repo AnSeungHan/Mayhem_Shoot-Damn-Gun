@@ -1,5 +1,6 @@
 using Unity.Entities;
 using Unity.Mathematics;
+using Unity.Transforms;
 
 public struct MovementData
     : IComponentData
@@ -22,6 +23,17 @@ public struct MovementDirectionData
 
 #endregion
 
+#region [ Owner ]
+
+public struct MovementOwnerRotationData
+    : IComponentData
+{
+    public Entity           owner;
+    public float            offset;
+}
+
+#endregion
+
 #region [ Nav Agent ]
 
 public struct NavAgentData : IComponentData
@@ -29,7 +41,6 @@ public struct NavAgentData : IComponentData
     public bool         isReachedDestination;
     public bool         isMove;
     public bool         hasPath;
-    public bool         isPathCalculated;
     public bool         isNeedsNewPath;
 
     public BlobAssetReference<NavMeshPathBlob> pathBlob;
@@ -49,5 +60,13 @@ public struct NavMeshPathBlob
     public BlobArray<float3> Corners;
 }
 
+
+#endregion
+
+#region [ Input ]
+
+public struct InputData
+    : IComponentData
+{ }
 
 #endregion
