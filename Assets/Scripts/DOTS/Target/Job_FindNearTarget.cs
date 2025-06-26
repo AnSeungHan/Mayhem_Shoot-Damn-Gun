@@ -32,6 +32,9 @@ public partial struct Job_FindNearTarget : IJobEntity
 
         for (int i = 0; i < TargetTransform.Length; ++i) 
         {
+            if (CAMP_TYPE.NONE == TargetCamp[i])
+                continue;
+
             if (entityIndex == i)
                 continue;
 
@@ -54,6 +57,11 @@ public partial struct Job_FindNearTarget : IJobEntity
         {
             target.targetEntity = closestEntity;
             target.targetTransform = closestTransform;
+        }
+        else
+        {
+            target.targetEntity = Entity.Null;
+
         }
     }
 }
@@ -78,5 +86,8 @@ public partial struct Job_UnitCollect : IJobEntity
         TargetTransform[entityIndex] = transform;
         TargetEntity[entityIndex]    = entity;
         TargetCamp[entityIndex]      = unit.campType;
+
+        if (CAMP_TYPE.NONE == TargetCamp[entityIndex])
+            return;
     }
 }

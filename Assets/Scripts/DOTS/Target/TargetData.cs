@@ -7,3 +7,11 @@ public struct TargetData
     public Entity           targetEntity;
     public LocalTransform   targetTransform;
 }
+
+public struct SearchAngleData
+    : IComponentData
+{
+    public float            searchRange;
+    public float            findAngle_begin;
+    public float            findAngle_end;
+}

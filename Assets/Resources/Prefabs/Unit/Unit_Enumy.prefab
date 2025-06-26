@@ -125,7 +125,7 @@ MonoBehaviour:
   acceleration: 5
   angularSpeed: 1
   stopDistance: 1
-  campType: 1
+  campType: 2
   movementMode: 3
   clusterMode: 1
   isMovement: 1

@@ -4,6 +4,7 @@ using Unity.Entities;
 [System.Serializable]
 public enum CAMP_TYPE
 {
+    NONE,
     ALLIANCE,
     ENUMY
 }

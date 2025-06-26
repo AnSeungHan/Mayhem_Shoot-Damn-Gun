@@ -9,6 +9,9 @@ public class ConfigAuthoring : MonoBehaviour
     public CLUSTER_MODE     clusterMode;
     public FIND_TARGET_MODE findTargetMode;
 
+    [Header("\n[ World Data ]")]
+    public GameObject   player;
+
     class Baker : Baker<ConfigAuthoring>
     {
         public override void Bake(ConfigAuthoring authoring)
@@ -25,6 +28,11 @@ public class ConfigAuthoring : MonoBehaviour
             Add_MovementMode(ref entity, authoring.movementMode);
             Add_ClusterMode(ref entity, authoring.clusterMode);
             Add_FindTargetMode(ref entity, authoring.findTargetMode);
+
+            AddComponent(entity, new ConfigWorldData
+            {
+                player = GetEntity(authoring.player, TransformUsageFlags.None)
+            });
         }
 
         private void Add_MovementMode(ref Entity entity, MOVEMENT_MODE mode)
@@ -70,6 +78,12 @@ public class ConfigAuthoring : MonoBehaviour
         public MOVEMENT_MODE    movementMode;
         public CLUSTER_MODE     clusterMode;
         public FIND_TARGET_MODE findTargetMode;
+    }
+
+    public struct ConfigWorldData
+        : IComponentData
+    {
+        public Entity player;
     }
 
     #endregion

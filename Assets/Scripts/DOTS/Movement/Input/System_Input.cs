@@ -1,6 +1,5 @@
 using UnityEngine;
 
-
 using Unity.Entities;
 using Unity.Burst;
 using Unity.Mathematics;
@@ -52,11 +51,5 @@ public partial struct System_Input : ISystem
             movement.ValueRW.hasNewPosition = true;
             movement.ValueRW.moveNextPosition = newPos;
         }
-    }
-
-    [BurstCompile]
-    public void OnDestroy(ref SystemState state)
-    {
-        
     }
 }
