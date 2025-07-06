@@ -39,12 +39,14 @@ public partial struct System_Input : ISystem
 
         foreach (var
             (
+                input,
                 transform,
                 movement,
                 entity
             )
             in SystemAPI.Query
             <
+                RefRO<InputData>,
                 RefRO<LocalTransform>,
                 RefRW<MovementData>
             >()

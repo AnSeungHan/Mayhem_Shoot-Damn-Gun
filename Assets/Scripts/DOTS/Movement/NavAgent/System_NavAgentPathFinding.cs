@@ -75,7 +75,7 @@ public partial struct System_NavAgentPathFinding : ISystem
             /*UnityEngine.AI.NavMeshTriangulation triangulation = UnityEngine.AI.NavMesh.CalculateTriangulation();
             Debug.Log($"NavMesh vertices count: {triangulation.vertices.Length}");*/
 
-            /*UnityEngine.AI.NavMeshHit hit;
+            UnityEngine.AI.NavMeshHit hit;
             if (UnityEngine.AI.NavMesh.SamplePosition(startPos, out hit, 5f, -1))
             {
                 startPos = hit.position;
@@ -84,7 +84,7 @@ public partial struct System_NavAgentPathFinding : ISystem
             if (UnityEngine.AI.NavMesh.SamplePosition(endPos, out hit, 5f, -1))
             {
                 endPos = hit.position;
-            }*/
+            }
 
             if (UnityEngine.AI.NavMesh.CalculatePath
                 (
