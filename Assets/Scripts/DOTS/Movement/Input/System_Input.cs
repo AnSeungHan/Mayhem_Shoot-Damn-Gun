@@ -5,18 +5,22 @@ using Unity.Burst;
 using Unity.Mathematics;
 using Unity.Transforms;
 
+using static MathematicsExtensions;
+
+[BurstCompile]
+[UpdateInGroup(typeof(InitializationSystemGroup))]
 public partial struct System_Input : ISystem
 {
-    [BurstCompile]
+    /*[BurstCompile]
     public void OnCreate(ref SystemState state)
     {
         state.RequireForUpdate<InputData>();
-    }
+    }*/
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        float3 moveDir = new float3
+        /*float3 moveDir = new float3
         (
             Input.GetAxis("Horizontal"),
             0,
@@ -26,19 +30,21 @@ public partial struct System_Input : ISystem
         moveDir = math.normalizesafe(moveDir);
         if (math.all(moveDir == float3.zero))
             return;
+        */
 
-        float dt = SystemAPI.Time.DeltaTime;
+        if (!SystemAPI.TryGetSingleton<JoystickInputData>(out var inputData))
+            return;
+
+         float dt = SystemAPI.Time.DeltaTime;
 
         foreach (var
             (
-                input,
                 transform,
                 movement,
                 entity
             )
             in SystemAPI.Query
             <
-                RefRO<InputData>,
                 RefRO<LocalTransform>,
                 RefRW<MovementData>
             >()
@@ -46,9 +52,14 @@ public partial struct System_Input : ISystem
         {
             float3 newPos
                 = transform.ValueRO.Position
-                + (moveDir * movement.ValueRO.moveSpeed * dt);
+                + (inputData.dir.ToFloat3_XZ() * movement.ValueRO.moveSpeed * dt);
 
-            movement.ValueRW.hasNewPosition = true;
+            if (inputData.jump)
+            {
+                newPos.y += 1f;
+            }
+
+            movement.ValueRW.hasNewPosition   = true;
             movement.ValueRW.moveNextPosition = newPos;
         }
     }

@@ -50,8 +50,8 @@ partial struct System_RaycastingWall : ISystem
             float closestDistance   = float.MaxValue;
             float3 start            = transform.ValueRO.Position + Float3.up;
 
-            Entity closestHitEntity   = Entity.Null;
-            float3 closestHitPosition = float3.zero;
+            Entity      closestEntity   = Entity.Null;
+            RaycastHit  closestHit      = default;
             foreach (float3 direction in Float3.directions)
             {
                 float3 end = start + direction * distance;
@@ -70,20 +70,21 @@ partial struct System_RaycastingWall : ISystem
 
                     if (hitDist < closestDistance)
                     {
-                        closestDistance    = hitDist;
-                        closestHitEntity   = hit.Entity;
-                        closestHitPosition = hit.Position;
+                        closestDistance     = hitDist;
+                        closestEntity       = hit.Entity;
+                        closestHit          = hit;
                     }
 
                     DebugUtill.DrawLine(start, hit.Position, HexColor.green);
+                    DebugUtill.DrawPoint_Normal(hit.Position, hit.SurfaceNormal, HexColor.green);
                 }
             }
 
-            if (Entity.Null == closestHitEntity)
+            if (Entity.Null == closestEntity)
                 continue;
 
-            DebugUtill.DrawLine(start, closestHitPosition, HexColor.red);
-            DebugUtill.DrawPoint(closestHitPosition, HexColor.green);
+            DebugUtill.DrawLine(start, closestHit.Position, HexColor.red);
+            DebugUtill.DrawPoint_Normal(closestHit.Position, closestHit.SurfaceNormal, HexColor.red);
         }
     }
 

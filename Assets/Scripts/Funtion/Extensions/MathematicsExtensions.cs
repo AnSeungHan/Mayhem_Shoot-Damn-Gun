@@ -24,9 +24,9 @@ public static class MathematicsExtensions
         };
     }
 
-    public static float3 normalize(this float3 vec)
+    public static float3 normalize(this float3 vec3)
     {
-        return math.normalize(vec);
+        return math.normalize(vec3);
     }
 
     public struct Float2
@@ -37,9 +37,14 @@ public static class MathematicsExtensions
         public static readonly float2 right     = new float2( 1,  0);
     }
 
-    public static float2 normalize(this float2 vec)
+    public static float2 normalize(this float2 vec2)
     {
-        return math.normalize(vec);
+        return math.normalize(vec2);
+    }
+
+    public static float3 ToFloat3_XZ(this float2 vec2)
+    {
+        return new float3(vec2.x, 0f, vec2.y);
     }
 
     public struct HexColor
