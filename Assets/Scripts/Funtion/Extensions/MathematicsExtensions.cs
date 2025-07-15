@@ -42,6 +42,11 @@ public static class MathematicsExtensions
         return math.normalize(vec2);
     }
 
+    public static bool IsZero(this float2 vec2)
+    {
+        return vec2.x == 0f && vec2.y == 0f;
+    }
+
     public static float3 ToFloat3_XZ(this float2 vec2)
     {
         return new float3(vec2.x, 0f, vec2.y);

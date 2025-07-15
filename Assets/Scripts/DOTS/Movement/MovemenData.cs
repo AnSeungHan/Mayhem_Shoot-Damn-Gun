@@ -67,9 +67,7 @@ public struct NavMeshPathBlob
 
 public struct InputData
     : IComponentData
-{
-
-}
+{ }
 
 public struct JoystickInputData
     : IComponentData
@@ -77,12 +75,5 @@ public struct JoystickInputData
     public float2   dir;
     public bool     jump;
 }
-
-public struct JumpInputData
-    : IComponentData
-{
-    public float2 dir;
-}
-
 
 #endregion

@@ -9,6 +9,7 @@ using static ConfigAuthoring;
 [UpdateAfter(typeof(System_DirectionMovement))]
 [UpdateAfter(typeof(System_NavAgentMove))]
 [UpdateAfter(typeof(System_BOIDS))]
+[UpdateBefore(typeof(Unity.Physics.Systems.AfterPhysicsSystemGroup))]
 public partial struct System_Movement : ISystem
 {
     [BurstCompile]
@@ -21,7 +22,10 @@ public partial struct System_Movement : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        var job = new Job_Movement();
+        var job = new Job_Movement()
+        {
+            deltaTime = SystemAPI.Time.DeltaTime
+        };
 
         job.ScheduleParallel();
     }
