@@ -211,7 +211,9 @@ GameObject:
   - component: {fileID: 685933794}
   - component: {fileID: 685933793}
   - component: {fileID: 685933795}
-  m_Layer: 0
+  - component: {fileID: 685933797}
+  - component: {fileID: 685933796}
+  m_Layer: 6
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -228,7 +230,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 500, y: 1, z: 500}
+  m_LocalScale: {x: 10, y: 10, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 712621180}
@@ -301,11 +303,11 @@ MonoBehaviour:
   m_ShapeType: 0
   m_PrimitiveCenter:
     x: 0
-    y: 0
+    y: -0.05
     z: 0
   m_PrimitiveSize:
     x: 10
-    y: 2.220446e-16
+    y: 0.1
     z: 10
   m_PrimitiveOrientation:
     Value:
@@ -318,14 +320,14 @@ MonoBehaviour:
     Radius: 5
     Axis: 2
   m_Cylinder:
-    Height: 2.220446e-16
+    Height: 0.1
     Radius: 5
     Axis: 1
   m_CylinderSideCount: 20
   m_SphereRadius: 5
   m_MinimumSkinnedVertexWeight: 0.1
   m_ConvexHullGenerationParameters:
-    m_SimplificationTolerance: 0.14999999
+    m_SimplificationTolerance: 0.015
     m_BevelRadius: 0.05
     m_MinimumAngle: 2.5000002
   m_CustomMesh: {fileID: 0}
@@ -429,6 +431,75 @@ MonoBehaviour:
         Tag07: 0
     m_SerializedVersion: 1
   m_SerializedVersion: 1
+--- !u!114 &685933796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 685933790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 844b3154bb811c84d931af489ccf9773, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InfiniteInertiaX: 1
+  InfiniteInertiaY: 1
+  InfiniteInertiaZ: 1
+  InfiniteMass: 1
+  IsKinematic: 0
+  SetVelocityToZero: 0
+--- !u!114 &685933797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 685933790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccea9ea98e38942e0b0938c27ed1903e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_MotionType: 0
+  m_Smoothing: 0
+  m_Mass: 1
+  m_LinearDamping: 0.01
+  m_AngularDamping: 0.05
+  m_InitialLinearVelocity:
+    x: 0
+    y: 0
+    z: 0
+  m_InitialAngularVelocity:
+    x: 0
+    y: 0
+    z: 0
+  m_GravityFactor: 1
+  m_OverrideDefaultMassDistribution: 0
+  m_CenterOfMass:
+    x: 0
+    y: 0
+    z: 0
+  m_Orientation:
+    Value:
+      x: 0
+      y: 0
+      z: 0
+    RotationOrder: 4
+  m_InertiaTensor:
+    x: 0.4
+    y: 0.4
+    z: 0.4
+  m_WorldIndex: 0
+  m_CustomTags:
+    Tag00: 0
+    Tag01: 0
+    Tag02: 0
+    Tag03: 0
+    Tag04: 0
+    Tag05: 0
+    Tag06: 0
+    Tag07: 0
 --- !u!1 &712621179
 GameObject:
   m_ObjectHideFlags: 0
@@ -556,6 +627,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Unit_Player
       objectReference: {fileID: 0}
+    - target: {fileID: 1320714072447345096, guid: 83902eae674e29b4e8a6767570a9e015, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3845053421942624101, guid: 83902eae674e29b4e8a6767570a9e015, type: 3}
       propertyPath: m_Mass
       value: 0.001
@@ -599,6 +674,14 @@ PrefabInstance:
     - target: {fileID: 4660724181019988471, guid: 83902eae674e29b4e8a6767570a9e015, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5751841242007031686, guid: 83902eae674e29b4e8a6767570a9e015, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7953488071285246761, guid: 83902eae674e29b4e8a6767570a9e015, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -745,7 +828,7 @@ MonoBehaviour:
   m_PrimitiveSize:
     x: 1.0000001
     y: 1
-    z: 1.0000006
+    z: 1
   m_PrimitiveOrientation:
     Value:
       x: -0
@@ -753,15 +836,15 @@ MonoBehaviour:
       z: 0
     RotationOrder: 4
   m_Capsule:
-    Height: 1.0000006
-    Radius: 0.50000006
-    Axis: 2
+    Height: 1.0000001
+    Radius: 0.5
+    Axis: 0
   m_Cylinder:
-    Height: 1.0000006
-    Radius: 0.50000006
-    Axis: 2
+    Height: 1.0000001
+    Radius: 0.5
+    Axis: 0
   m_CylinderSideCount: 20
-  m_SphereRadius: 0.5000003
+  m_SphereRadius: 0.50000006
   m_MinimumSkinnedVertexWeight: 0.1
   m_ConvexHullGenerationParameters:
     m_SimplificationTolerance: 0.015000009
@@ -917,7 +1000,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 15.2, y: 0.1, z: 14}
-  m_LocalScale: {x: 51.42, y: 10.2, z: 2.63}
+  m_LocalScale: {x: 51.42, y: 13.76, z: 9.04}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 712621180}

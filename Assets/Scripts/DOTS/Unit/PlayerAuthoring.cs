@@ -12,7 +12,6 @@ public class PlayerAuthoring : MonoBehaviour
     public float            angularSpeed = 1f;
     public float            stopDistance = 1f;
 
-
     class Baker : Baker<PlayerAuthoring>
     {
         public override void Bake(PlayerAuthoring authoring)
@@ -32,6 +31,7 @@ public class PlayerAuthoring : MonoBehaviour
                 angularSpeed    = authoring.angularSpeed,
                 stopDistance    = authoring.stopDistance,
             });
+            AddComponent(entity, new SlidWallData());
         }
     }
 }

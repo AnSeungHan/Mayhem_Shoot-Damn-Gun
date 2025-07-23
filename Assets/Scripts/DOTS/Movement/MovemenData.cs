@@ -13,6 +13,8 @@ public struct MovementData
     public float        curSpeed;
     public bool         hasNewPosition;
     public float3       moveNextPosition;
+
+    public bool         isGround;
 }
 
 #region [ Direction ]
@@ -74,6 +76,18 @@ public struct JoystickInputData
 {
     public float2   dir;
     public bool     jump;
+}
+
+#endregion
+
+#region [ Only Player ]
+
+public struct SlidWallData
+    : IComponentData
+{
+    public float3   dir;
+    public float3   nearPosition;
+    public bool     sliding;
 }
 
 #endregion

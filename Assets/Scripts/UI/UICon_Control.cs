@@ -57,8 +57,18 @@ public class UICon_Control : MonoBehaviour
         Vector3    targetPos = (Vector3)transform.Position + camOffsetPos;
         Quaternion targetRot = Quaternion.Euler(camOffsetRot);
 
-        Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, targetPos, Time.deltaTime * 5f);
-        Camera.main.transform.rotation = Quaternion.Slerp(Camera.main.transform.rotation, targetRot, Time.deltaTime * 5f);
+        Camera.main.transform.position = Vector3.Lerp
+        (
+            Camera.main.transform.position,
+            targetPos,
+            Time.deltaTime * 5f
+        );
+        Camera.main.transform.rotation = Quaternion.Slerp
+        (
+            Camera.main.transform.rotation,
+            targetRot,
+            Time.deltaTime * 5f
+        );
         
         // ¿£Æ¼Æ¼
         float2 dir = new float2(joystick.Horizontal, joystick.Vertical);

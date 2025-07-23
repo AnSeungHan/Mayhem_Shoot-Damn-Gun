@@ -12,6 +12,12 @@ public static class DebugUtill
         return new Color(r, g, b, 1f);
     }
 
+    public static void DrawTargetLine(Vector3 start, Vector3 end, Vector3 normal, uint color)
+    {
+        DrawLine(start, end, color);
+        DrawPoint_Normal(end, normal, color);
+    }
+
     public static void DrawLine(Vector3 start, Vector3 end, uint color)
     {
         Debug.DrawLine(start, end, ColorFromInt(color));

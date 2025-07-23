@@ -40,7 +40,7 @@ public class PhysicsMassBehaviourAuthoring : MonoBehaviour
                     InfiniteInertiaX = authoring.InfiniteInertiaX,
                     InfiniteInertiaY = authoring.InfiniteInertiaY,
                     InfiniteInertiaZ = authoring.InfiniteInertiaZ,
-                    InfiniteMass = authoring.InfiniteMass
+                    InfiniteMass     = authoring.InfiniteMass
                 });
             }
         }

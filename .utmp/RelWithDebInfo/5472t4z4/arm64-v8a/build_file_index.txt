@@ -1,0 +1,2 @@
+H:\1. Develop\0. save\( 1.2.1 ) Unity\ECS_RTS_Test\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\CMakeLists.txt
+H:\1. Develop\0. save\( 1.2.1 ) Unity\ECS_RTS_Test\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\GameActivity\CMakeLists.txt

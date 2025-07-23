@@ -9,7 +9,6 @@ using static ConfigAuthoring;
 [UpdateAfter(typeof(System_DirectionMovement))]
 [UpdateAfter(typeof(System_NavAgentMove))]
 [UpdateAfter(typeof(System_BOIDS))]
-[UpdateBefore(typeof(Unity.Physics.Systems.AfterPhysicsSystemGroup))]
 public partial struct System_Movement : ISystem
 {
     [BurstCompile]

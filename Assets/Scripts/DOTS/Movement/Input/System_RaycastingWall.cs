@@ -4,13 +4,13 @@ using Unity.Transforms;
 using Unity.Collections;
 using Unity.Burst;
 using Unity.Physics;
-using Unity.Physics.Extensions;
 
 using static MathematicsExtensions;
 
 partial struct System_RaycastingWall : ISystem
 {
-    private static readonly CollisionFilter filter = new CollisionFilter
+    private const           float           distance    = 1.5f;
+    private static readonly CollisionFilter filter      = new CollisionFilter
     {
         BelongsTo       = ~0u,
         CollidesWith    = (1 << 6),
@@ -31,22 +31,29 @@ partial struct System_RaycastingWall : ISystem
 
         var collector = new ClosestHitCollector<RaycastHit>(1f);
 
+        
+
         foreach 
         (
             var 
             (
                 transform,
+                movement,
+                slider,
+
                 entity
             )
             in SystemAPI.Query
             <
-                RefRO<LocalTransform>
+                RefRO<LocalTransform>,
+                RefRO<MovementData>,
+
+                RefRW<SlidWallData>
             >()
             .WithAll<InputData>()
             .WithEntityAccess()
         )
         {
-            float distance          = 10f;
             float closestDistance   = float.MaxValue;
             float3 start            = transform.ValueRO.Position + Float3.up;
 
@@ -75,77 +82,25 @@ partial struct System_RaycastingWall : ISystem
                         closestHit          = hit;
                     }
 
-                    DebugUtill.DrawLine(start, hit.Position, HexColor.green);
-                    DebugUtill.DrawPoint_Normal(hit.Position, hit.SurfaceNormal, HexColor.green);
+                    DebugUtill.DrawTargetLine(start, hit.Position, hit.SurfaceNormal, HexColor.green);
                 }
             }
 
             if (Entity.Null == closestEntity)
-                continue;
+            {
+                slider.ValueRW.sliding = false;
+            }
+            else
+            {
+                float3 normal   = math.normalize(closestHit.SurfaceNormal);
+                float3 slideDir = math.normalize(math.cross(normal, math.up()));
 
-            DebugUtill.DrawLine(start, closestHit.Position, HexColor.red);
-            DebugUtill.DrawPoint_Normal(closestHit.Position, closestHit.SurfaceNormal, HexColor.red);
+                slider.ValueRW.nearPosition = closestHit.Position;
+                slider.ValueRW.dir          = slideDir;
+                slider.ValueRW.sliding      = true;
+
+                DebugUtill.DrawTargetLine(start, closestHit.Position, closestHit.SurfaceNormal, HexColor.red);
+            }
         }
     }
-
-    /*public void OnUpdate(ref SystemState state)
-    {
-        var physicsWorld   = SystemAPI.GetSingleton<PhysicsWorldSingleton>();
-        var collisionWorld = physicsWorld.PhysicsWorld.CollisionWorld;
-
-        var collector = new ClosestHitCollector<RaycastHit>(1f);
-        var filter = new CollisionFilter
-        {
-            BelongsTo       = ~0u,
-            CollidesWith    = ~0u,
-            GroupIndex      = 0
-        };
-
-        foreach 
-        (
-            var 
-            (
-                transform,
-                entity
-            )
-            in SystemAPI.Query
-            <
-                RefRO<LocalTransform>
-            >()
-            .WithAll<InputData>()
-            .WithEntityAccess()
-        )
-        {
-            NativeList<ColliderCastHit> outHits = new NativeList<ColliderCastHit>(Allocator.Temp);
-
-            if (collisionWorld.SphereCastAll
-                (
-                    transform.ValueRO.Position,
-                    1f,
-                    Float3.forward,
-                    1f,
-                    ref outHits,
-                    filter
-                ))
-            {
-                if (0 == outHits.Length)
-                    continue;
-
-                var closest = outHits[0];
-                for (int i = 1; i < outHits.Length; i++)
-                {
-                    if (outHits[i].Fraction < closest.Fraction)
-                        closest = outHits[i];
-                }
-
-                Entity hitEntity = closest.Entity;
-                float3 hitPos = closest.Position;
-
-                DebugUtill.DrawLine(transform.ValueRO.Position, hitPos, HexColor.red);
-                DebugUtill.DrawPoint(hitPos, HexColor.green);
-            }
-
-            outHits.Dispose();
-        }
-    }*/
 }
