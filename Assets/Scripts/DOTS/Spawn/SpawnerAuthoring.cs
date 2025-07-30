@@ -9,21 +9,19 @@ public class SpawnerAuthoring : MonoBehaviour
 
     [Header("\n[ Setting ]")]
     public int          numCreate;
-    public Vector2      boundsBegin;
-    public Vector2      boundsEnd;
+    public Vector2      bounds;
 
     class Baker : Baker<SpawnerAuthoring>
     {
         public override void Bake(SpawnerAuthoring authoring)
         {
-            Entity entity = GetEntity(authoring, TransformUsageFlags.None);
+            Entity entity = GetEntity(authoring, TransformUsageFlags.Dynamic);
 
             AddComponent(entity, new SpawnerData 
             {
                 createPrefab    = GetEntity(authoring.createPrefab, TransformUsageFlags.Dynamic),
                 numCreate       = authoring.numCreate,
-                boundsBegin     = authoring.boundsBegin,
-                boundsEnd       = authoring.boundsEnd,
+                bounds          = authoring.bounds,
             });
         }
     }

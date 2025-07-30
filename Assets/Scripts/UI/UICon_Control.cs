@@ -17,12 +17,10 @@ public class UICon_Control : MonoBehaviour
     [SerializeField]
     private Vector3 camOffsetRot;
 
-
     private EntityManager   entityManager;
     private EntityQuery     followTargetQuery;
     private Entity          inputEntity;
     private bool            isJump = false;
-
 
     private void Start()
     {
@@ -40,7 +38,7 @@ public class UICon_Control : MonoBehaviour
         );
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (joystick == null)
             return;
@@ -71,16 +69,22 @@ public class UICon_Control : MonoBehaviour
         );
         
         // ¿£Æ¼Æ¼
-        float2 dir = new float2(joystick.Horizontal, joystick.Vertical);
+        float2 dir = new float2
+        (
+            joystick.Horizontal, 
+            joystick.Vertical
+        );
 
         entityManager.SetComponentData(inputEntity, new JoystickInputData
         {
-            dir = dir,
-            jump = isJump
+            dir     = dir,
+            jump    = isJump
         });
 
         if (isJump)
+        { 
             isJump = false;
+        }
     }
 
     public void OnClick_Jump()

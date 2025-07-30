@@ -56,5 +56,7 @@ public static class MathematicsExtensions
     {
         public static readonly uint red         = 0xFF0000;
         public static readonly uint green       = 0x00FF00;
+        public static readonly uint blue        = 0x0000FF;
+        public static readonly uint yellow      = 0xFFFF00;
     }
 }

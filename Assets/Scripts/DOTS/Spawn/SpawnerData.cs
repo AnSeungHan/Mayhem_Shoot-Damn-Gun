@@ -6,8 +6,7 @@ public struct SpawnerData : IComponentData
     public Entity   createPrefab;
 
     public int      numCreate;
-    public float2   boundsBegin;
-    public float2   boundsEnd;
+    public float2   bounds;
 }
 
 public struct SpawnerData_Click : IComponentData

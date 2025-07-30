@@ -33,6 +33,7 @@ public partial struct System_NavAgentPathFinding : ISystem
         foreach (var 
             (
                 agent,
+
                 target,
                 transform,
 
@@ -41,6 +42,7 @@ public partial struct System_NavAgentPathFinding : ISystem
             in SystemAPI.Query
             <
                 RefRW<NavAgentData>,
+
                 RefRO<TargetData>,
                 RefRO<LocalTransform>
             >()
@@ -50,8 +52,7 @@ public partial struct System_NavAgentPathFinding : ISystem
                 continue;
 
             float3 startPos = transform.ValueRO.Position;
-            //float3 endPos   = target.ValueRO.targetTransform.Position;
-            float3 endPos = state.EntityManager.GetComponentData<LocalTransform>(target.ValueRO.targetEntity).Position;
+            float3 endPos   = state.EntityManager.GetComponentData<LocalTransform>(target.ValueRO.targetEntity).Position;
             float3 prevPos  = agent.ValueRW.preTargetPosition;
 
             float3 targetPos_Cur = new float3(endPos.x , 0f, endPos.z);

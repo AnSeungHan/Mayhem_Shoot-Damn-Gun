@@ -1,5 +1,3 @@
-using UnityEngine;
-
 using Unity.Entities;
 using Unity.Burst;
 using Unity.Mathematics;
@@ -12,11 +10,11 @@ using static MathematicsExtensions;
 [UpdateInGroup(typeof(InitializationSystemGroup))]
 public partial struct System_Input : ISystem
 {
-    /*[BurstCompile]
+    [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
-        state.RequireForUpdate<InputData>();
-    }*/
+        state.RequireForUpdate<JoystickInputData>();
+    }
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
@@ -58,14 +56,7 @@ public partial struct System_Input : ISystem
             if (slider.ValueRO.sliding &&
                 !movement.ValueRO.isGround)
             {
-                float speed = movement.ValueRO.moveSpeed * 2.5f;
-
-                /*float3 newPos
-                    = transform.ValueRO.Position
-                    + (slider.ValueRO.dir * speed);
-
-                movement.ValueRW.hasNewPosition     = true;
-                movement.ValueRW.moveNextPosition   = newPos;*/
+                float speed = movement.ValueRO.moveSpeed * 1.85f;
 
                 float3 dir = slider.ValueRO.dir * speed;
                 velocity.ValueRW.Linear.x = dir.x;
@@ -76,35 +67,14 @@ public partial struct System_Input : ISystem
 
             if (!inputData.dir.IsZero())
             {
-                /*if (slider.ValueRO.sliding)
-                {
-                    float distToWall = math.distance
-                    (
-                        transform.ValueRO.Position,
-                        slider.ValueRO.nearPosition
-                    );
-
-                    if (2f >= distToWall)
-                    {
-                        continue;
-                    }
-                }*/
-                    
                 float speed = (movement.ValueRO.isGround) 
                     ? (movement.ValueRO.moveSpeed) 
                     : (movement.ValueRO.moveSpeed * 0.65f);
-
-                /*float3 newPos
-                    = transform.ValueRO.Position
-                    + (inputData.dir.ToFloat3_XZ() * speed * dt);*/
 
                 float3 dir = inputData.dir.ToFloat3_XZ() * speed;
 
                 velocity.ValueRW.Linear.x = dir.x;
                 velocity.ValueRW.Linear.z = dir.z;
-
-                /*movement.ValueRW.hasNewPosition   = true;
-                movement.ValueRW.moveNextPosition = newPos;*/
             }
             else 
             {

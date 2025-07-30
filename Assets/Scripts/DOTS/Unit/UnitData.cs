@@ -33,10 +33,6 @@ public struct UnitData
 
 //bool hasComponent = SystemAPI.EntityManager.HasComponent<YourComponent>(entity);
 
-public struct AllianceData
-    : IComponentData
-{ }
-
-public struct EnumyData
+public struct AIData
     : IComponentData
 { }

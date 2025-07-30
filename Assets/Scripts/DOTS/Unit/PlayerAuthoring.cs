@@ -22,8 +22,6 @@ public class PlayerAuthoring : MonoBehaviour
             {
                 campType        = CAMP_TYPE.ALLIANCE
             });
-            AddComponent(entity, new TargetData());
-            AddComponent(entity, new InputData());
             AddComponent(entity, new MovementData
             {
                 moveSpeed       = authoring.moveSpeed,
@@ -31,6 +29,9 @@ public class PlayerAuthoring : MonoBehaviour
                 angularSpeed    = authoring.angularSpeed,
                 stopDistance    = authoring.stopDistance,
             });
+            AddComponent(entity, new AIData()); 
+            AddComponent(entity, new TargetData());
+            AddComponent(entity, new InputData());
             AddComponent(entity, new SlidWallData());
         }
     }

@@ -12,8 +12,7 @@ public partial struct System_DirectionMovement : ISystem
     [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
-        state.RequireForUpdate<Config_Info>();
-        state.RequireForUpdate<Config_Movement_Direction>();
+        state.RequireForUpdate<MovementDirectionData>();
     }
 
     [BurstCompile]

@@ -21,21 +21,26 @@ public partial struct System_Spawner : ISystem
 
         foreach (var 
             (
+                transform,
                 spawner,
+
                 entity
             )
             in SystemAPI.Query
             <
+                RefRO<LocalTransform>,
                 RefRO<SpawnerData>
             >()
             .WithEntityAccess())
         {
+            float2 center   = transform.ValueRO.Position.xz;
+            float2 halfSize = spawner.ValueRO.bounds * 0.5f;
+            float2 begin    = center - halfSize;
+            float2 end      = center + halfSize;
+
             for (int i = 0; i < spawner.ValueRO.numCreate; ++i)
             { 
                 var newEntity = state.EntityManager.Instantiate(spawner.ValueRO.createPrefab);
-
-                float2 begin = spawner.ValueRO.boundsBegin;
-                float2 end   = spawner.ValueRO.boundsEnd;
 
                 float3 pos = new float3
                 (

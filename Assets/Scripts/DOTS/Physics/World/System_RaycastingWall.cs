@@ -9,7 +9,8 @@ using static MathematicsExtensions;
 
 partial struct System_RaycastingWall : ISystem
 {
-    private const           float           distance    = 1.5f;
+    private const           float           distance    = 1.2f;
+    private const           float           offset      = 1f;
     private static readonly CollisionFilter filter      = new CollisionFilter
     {
         BelongsTo       = ~0u,
@@ -29,9 +30,7 @@ partial struct System_RaycastingWall : ISystem
         var physicsWorld   = SystemAPI.GetSingleton<PhysicsWorldSingleton>();
         var collisionWorld = physicsWorld.PhysicsWorld.CollisionWorld;
 
-        var collector = new ClosestHitCollector<RaycastHit>(1f);
-
-        
+        var collector = new ClosestHitCollector<RaycastHit>(offset);
 
         foreach 
         (
@@ -39,6 +38,7 @@ partial struct System_RaycastingWall : ISystem
             (
                 transform,
                 movement,
+
                 slider,
 
                 entity
@@ -54,11 +54,12 @@ partial struct System_RaycastingWall : ISystem
             .WithEntityAccess()
         )
         {
-            float closestDistance   = float.MaxValue;
-            float3 start            = transform.ValueRO.Position + Float3.up;
+            float  closestDistance = float.MaxValue;
+            float3 start           = transform.ValueRO.Position + Float3.up;
 
             Entity      closestEntity   = Entity.Null;
             RaycastHit  closestHit      = default;
+
             foreach (float3 direction in Float3.directions)
             {
                 float3 end = start + direction * distance;
@@ -77,12 +78,16 @@ partial struct System_RaycastingWall : ISystem
 
                     if (hitDist < closestDistance)
                     {
-                        closestDistance     = hitDist;
-                        closestEntity       = hit.Entity;
-                        closestHit          = hit;
+                        closestDistance = hitDist;
+                        closestEntity   = hit.Entity;
+                        closestHit      = hit;
                     }
 
                     DebugUtill.DrawTargetLine(start, hit.Position, hit.SurfaceNormal, HexColor.green);
+                }
+                else
+                {
+                    DebugUtill.DrawLine(start, end, HexColor.yellow);
                 }
             }
 
