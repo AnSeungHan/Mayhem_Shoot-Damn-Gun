@@ -102,6 +102,7 @@ partial struct System_RaycastingWall : ISystem
 
                 slider.ValueRW.nearPosition = closestHit.Position;
                 slider.ValueRW.dir          = slideDir;
+                slider.ValueRW.normal       = normal;
                 slider.ValueRW.sliding      = true;
 
                 DebugUtill.DrawTargetLine(start, closestHit.Position, closestHit.SurfaceNormal, HexColor.red);

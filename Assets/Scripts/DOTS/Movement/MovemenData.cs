@@ -69,7 +69,10 @@ public struct NavMeshPathBlob
 
 public struct InputData
     : IComponentData
-{ }
+{
+    public float2   curDir;
+    public float2   preDir;
+}
 
 public struct JoystickInputData
     : IComponentData
@@ -86,6 +89,7 @@ public struct SlidWallData
     : IComponentData
 {
     public float3   dir;
+    public float3   normal;
     public float3   nearPosition;
     public bool     sliding;
 }

@@ -26,10 +26,10 @@ public partial struct System_Input : ISystem
 
         foreach (var
             (
-                input,
                 transform,
                 slider,
 
+                input,
                 movement,
                 velocity,
 
@@ -37,15 +37,21 @@ public partial struct System_Input : ISystem
             )
             in SystemAPI.Query
             <
-                RefRO<InputData>,
                 RefRO<LocalTransform>,
                 RefRO<SlidWallData>,
 
+                RefRW<InputData>,
                 RefRW<MovementData>, 
                 RefRW<PhysicsVelocity>
             >()
             .WithEntityAccess())
         {
+            if (!inputData.dir.IsZero())
+            {
+                input.ValueRW.preDir = input.ValueRO.curDir;
+                input.ValueRW.curDir = inputData.dir;
+            }
+
             if (inputData.jump)
             {
                 velocity.ValueRW.Linear.y = 8f;
@@ -58,7 +64,16 @@ public partial struct System_Input : ISystem
             {
                 float speed = movement.ValueRO.moveSpeed * 1.85f;
 
-                float3 dir = slider.ValueRO.dir * speed;
+                float2 inputDir     = (!inputData.dir.IsZero() || input.ValueRO.preDir.IsZero()) 
+                    ? (inputData.dir.normalize())
+                    : (input.ValueRO.preDir.normalize());
+                float2 sliderDir    = slider.ValueRO.dir.xz.normalize();
+                float  dot          = math.dot(inputDir, sliderDir);
+
+                float3 dir 
+                    = slider.ValueRO.dir 
+                    * ((dot >= 0f) ? (speed) : (-speed));
+
                 velocity.ValueRW.Linear.x = dir.x;
                 velocity.ValueRW.Linear.z = dir.z;
 
