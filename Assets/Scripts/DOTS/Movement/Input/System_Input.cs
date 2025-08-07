@@ -55,8 +55,6 @@ public partial struct System_Input : ISystem
             if (inputData.jump)
             {
                 velocity.ValueRW.Linear.y = 8f;
-
-                //movement.ValueRW.hasNewPosition = false;
             }
 
             if (slider.ValueRO.sliding &&
@@ -99,3 +97,5 @@ public partial struct System_Input : ISystem
         }
     }
 }
+
+

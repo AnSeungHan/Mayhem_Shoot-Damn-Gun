@@ -119,6 +119,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &217658017 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1320714072447345096, guid: 83902eae674e29b4e8a6767570a9e015, type: 3}
+  m_PrefabInstance: {fileID: 928025524}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &376392182
 GameObject:
   m_ObjectHideFlags: 0
@@ -748,7 +753,7 @@ MonoBehaviour:
   movementMode: 3
   clusterMode: 0
   findTargetMode: 1
-  player: {fileID: 0}
+  player: {fileID: 217658017}
 --- !u!1 &685933790
 GameObject:
   m_ObjectHideFlags: 0

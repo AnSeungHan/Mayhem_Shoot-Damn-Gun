@@ -27,9 +27,21 @@ public partial struct Job_Movement : IJobEntity
             return;
         }
 
-        float3 dir
+        float3 moveDir = math.normalize(movement.moveNextPosition - transform.Position);
+        /*float3 newPos
+            = transform.Position
+            + (moveDir * movement.moveSpeed)
+            + deltaTime;
+
+        transform.Position = newPos;*/
+
+        /*float3 dir
             = movement.moveNextPosition.normalize()
-            * -movement.moveSpeed;
+            * -movement.moveSpeed;*/
+
+        float3 dir
+            = moveDir
+            * movement.moveSpeed;
 
         velocity.Linear.x = dir.x;
         velocity.Linear.z = dir.z;

@@ -34,7 +34,7 @@ public partial struct Job_NavAgentMove : IJobEntity
         if (agent.currentCornerIndex >= pathBlob.Corners.Length)
         {
             agent.isReachedDestination = true;
-            agent.hasPath            = false;
+            agent.hasPath              = false;
             movement.curSpeed          = 0f;
 
             return;
@@ -53,7 +53,7 @@ public partial struct Job_NavAgentMove : IJobEntity
             if (agent.currentCornerIndex >= pathBlob.Corners.Length)
             {
                 agent.isReachedDestination = true;
-                agent.hasPath            = false;
+                agent.hasPath              = false;
                 movement.curSpeed          = 0f;
 
                 return;

@@ -55,13 +55,12 @@ public partial struct Job_FindNearTarget : IJobEntity
 
         if (closestEntity != Entity.Null)
         {
-            target.targetEntity = closestEntity;
+            target.targetEntity    = closestEntity;
             target.targetTransform = closestTransform;
         }
         else
         {
-            target.targetEntity = Entity.Null;
-
+            target.targetEntity    = Entity.Null;
         }
     }
 }

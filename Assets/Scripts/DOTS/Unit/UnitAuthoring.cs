@@ -30,8 +30,8 @@ public class UnitAuthoring : MonoBehaviour
                 stopDistance    = authoring.stopDistance,
             });
             AddComponent(entity, new TargetData());
-            //AddComponent(entity, new NavAgentData());
-            AddComponent(entity, new MovementDirectionData());
+            AddComponent(entity, new NavAgentData());
+            //AddComponent(entity, new MovementDirectionData());
             //AddComponent(entity, new Cluster_BOIDSData());
         }
     }
